@@ -3,6 +3,7 @@ import { useState } from "react";
 
 function App() {
   const [diceEyes, setDiceEyes] = useState([]);
+  const [LockDice, setLockDice] = useState([false, false, false, false, false]);
   const [leftRoll, setLeftRoll] = useState(3);
   const [One, setOne] = useState([]);
   const [Two, setTwo] = useState([]);
@@ -19,15 +20,34 @@ function App() {
 
   const rolling = () => {
     if (leftRoll > 0) {
-      setDiceEyes([
-        Math.floor(Math.random() * 6 + 1),
-        Math.floor(Math.random() * 6 + 1),
-        Math.floor(Math.random() * 6 + 1),
-        Math.floor(Math.random() * 6 + 1),
-        Math.floor(Math.random() * 6 + 1),
-      ]);
+      if (diceEyes.toString() === "") {
+        setDiceEyes([
+          Math.floor(Math.random() * 6 + 1),
+          Math.floor(Math.random() * 6 + 1),
+          Math.floor(Math.random() * 6 + 1),
+          Math.floor(Math.random() * 6 + 1),
+          Math.floor(Math.random() * 6 + 1),
+        ]);
+      } else {
+        let NewDice = diceEyes.map((dice, index) =>
+          LockDice[index] ? dice : Math.floor(Math.random() * 6 + 1)
+        );
+        console.log(NewDice);
+        setDiceEyes(NewDice);
+      }
+
       setLeftRoll(leftRoll - 1);
     }
+  };
+
+  const Lock = (index) => {
+    setLockDice(LockDice.map((lock, i) => (index === i ? !lock : lock)));
+  };
+
+  const reset = () => {
+    setLeftRoll(3);
+    setDiceEyes([]);
+    setLockDice([false, false, false, false, false]);
   };
 
   const SaveOne = () => {
@@ -43,8 +63,7 @@ function App() {
         setOne(0);
       }
 
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -59,8 +78,7 @@ function App() {
       } else {
         setTwo(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -75,8 +93,7 @@ function App() {
       } else {
         setThree(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -91,8 +108,7 @@ function App() {
       } else {
         setFour(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -107,8 +123,7 @@ function App() {
       } else {
         setFive(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -123,8 +138,7 @@ function App() {
       } else {
         setSix(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -134,8 +148,7 @@ function App() {
         return (prev += cur);
       });
       setChoice(ChoiceTotal);
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -155,8 +168,7 @@ function App() {
       } else {
         setFourOfAKind(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -177,8 +189,7 @@ function App() {
       } else {
         setFullHouse(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -200,8 +211,7 @@ function App() {
       } else {
         setSstraight(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -216,8 +226,7 @@ function App() {
       } else {
         setLstraight(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
@@ -235,15 +244,22 @@ function App() {
       } else {
         setYacht(0);
       }
-      setLeftRoll(3);
-      setDiceEyes([]);
+      reset();
     }
   };
 
   return (
     <>
       {diceEyes.map((dice, index) => (
-        <button key={index + "dice"}>{dice}</button>
+        <button
+          key={index + "dice"}
+          onClick={() => {
+            Lock(index);
+          }}
+          className={LockDice[index] ? "Lock" : "Open"}
+        >
+          {dice}
+        </button>
       ))}
       <button onClick={rolling}>주사위 굴리기</button>
       <div>남은 재굴림 : {leftRoll} </div>
