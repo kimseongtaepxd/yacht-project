@@ -17,6 +17,7 @@ function App() {
   const [Sstraight, setSstraight] = useState([]);
   const [Lstraight, setLstraight] = useState([]);
   const [Yacht, setYacht] = useState([]);
+  const [Total, setTotal] = useState(0);
 
   const rolling = () => {
     if (leftRoll > 0) {
@@ -45,9 +46,40 @@ function App() {
   };
 
   const reset = () => {
+    addTotal();
     setLeftRoll(3);
     setDiceEyes([]);
     setLockDice([false, false, false, false, false]);
+  };
+
+  const addTotal = () => {
+    let NewScore =
+      Number(One) +
+      Number(Two) +
+      Number(Three) +
+      Number(Four) +
+      Number(Five) +
+      Number(Six) +
+      Number(Choice) +
+      Number(FourOfAKind) +
+      Number(FullHouse) +
+      Number(Sstraight) +
+      Number(Lstraight) +
+      Number(Yacht);
+
+    if (
+      Number(One) +
+        Number(Two) +
+        Number(Three) +
+        Number(Four) +
+        Number(Five) +
+        Number(Six) >=
+      63
+    ) {
+      NewScore += 35;
+    }
+
+    setTotal(NewScore);
   };
 
   const SaveOne = () => {
@@ -195,9 +227,9 @@ function App() {
 
   const SaveSstraight = () => {
     if (Sstraight.toString() === "" && diceEyes.toString() !== "") {
-      let DeleteSame = new Set(diceEyes);
-      let Straight = [...DeleteSame];
-      Straight = Straight.sort();
+      let Straight = diceEyes.sort();
+      Straight = new Set(Straight);
+      Straight = [...Straight];
 
       if (
         (Straight.toString() === [1, 2, 3, 4].toString()) |
@@ -247,62 +279,230 @@ function App() {
       reset();
     }
   };
+  if (
+    One.toString() !== "" &&
+    Two.toString() !== "" &&
+    Three.toString() !== "" &&
+    Four.toString() !== "" &&
+    Five.toString() !== "" &&
+    Six.toString() !== "" &&
+    Choice.toString() !== "" &&
+    FourOfAKind.toString() !== "" &&
+    FullHouse.toString() !== "" &&
+    Sstraight.toString() !== "" &&
+    Lstraight.toString() !== "" &&
+    Yacht.toString() !== ""
+  ) {
+    addTotal();
+    console.log("실행확인");
+    var userName = prompt(
+      "닉네임을 입력해주세요! 최종 스코어 :" + Total,
+      "익명"
+    );
+
+    localStorage.setItem(userName, Total);
+    //Id의 숫자가 1늘어남
+
+    setOne([]);
+    setTwo([]);
+    setThree([]);
+    setFour([]);
+    setFive([]);
+    setSix([]);
+    setChoice([]);
+    setFourOfAKind([]);
+    setFullHouse([]);
+    setSstraight([]);
+    setLstraight([]);
+    setYacht([]);
+    reset();
+  }
+
+  const RecordScore = () => {
+    let arr = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      let key = localStorage.key(i);
+      let EndScore = localStorage.getItem(key);
+      const Item = {
+        NickName: key,
+        Score: EndScore,
+      };
+      arr.push(Item);
+    }
+    arr.sort(function (a, b) {
+      // 오름차순
+      return a - b;
+    });
+    arr = arr.map((arr, index) => (
+      <div key={arr.NickName} id={index}>
+        {arr.NickName} : {arr.Score}
+      </div>
+    ));
+    return arr;
+  };
 
   return (
-    <>
-      {diceEyes.map((dice, index) => (
-        <button
-          key={index + "dice"}
-          onClick={() => {
-            Lock(index);
-          }}
-          className={LockDice[index] ? "Lock" : "Open"}
-        >
-          {dice}
-        </button>
-      ))}
-      <button onClick={rolling}>주사위 굴리기</button>
-      <div>남은 재굴림 : {leftRoll} </div>
-      <button onClick={SaveOne}>one</button>
-      <div>{One}</div>
-      <button onClick={SaveTwo}>two</button>
-      <div>{Two}</div>
-      <button onClick={SaveThree}>three</button>
-      <div>{Three}</div>
-      <button onClick={SaveFour}>four</button>
-      <div>{Four}</div>
-      <button onClick={SaveFive}>five</button>
-      <div>{Five}</div>
-      <button onClick={SaveSix}>six</button>
-      <div>{Six}</div>
-      <button onClick={SaveChoice}>choice</button>
-      <div>{Choice}</div>
-      <button onClick={SaveFourOfAKind}>FourOfAKind</button>
-      <div>{FourOfAKind}</div>
-      <button onClick={SaveFullHouse}>FullHouse</button>
-      <div>{FullHouse}</div>
-      <button onClick={SaveSstraight}>Sstraight</button>
-      <div>{Sstraight}</div>
-      <button onClick={SaveLstraight}>Lstraight</button>
-      <div>{Lstraight}</div>
-      <button onClick={SaveYacht}>Yacht</button>
-      <div>{Yacht}</div>
-      <div>
+    <div className="Window">
+      <div className="Dices">
+        {diceEyes.map((dice, index) => (
+          <button
+            key={index + "dice"}
+            onClick={() => {
+              Lock(index);
+            }}
+            className={LockDice[index] ? "Lock" : "Open"}
+          >
+            {dice}
+          </button>
+        ))}
+      </div>
+
+      <div className="Roll">
+        <button onClick={rolling}>주사위 굴리기</button>
+        <span>남은 재굴림 : {leftRoll} </span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Categories</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <button onClick={SaveOne}>Aces</button>
+            </td>
+            <td>{One}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveTwo}>Deuces</button>
+            </td>
+            <td>{Two}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveThree}>Threes</button>
+            </td>
+            <td>{Three}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveFour}>Fours</button>
+            </td>
+            <td>{Four}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveFive}>Fives</button>
+            </td>
+            <td>{Five}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveSix}>Sixes</button>
+            </td>
+            <td>{Six}</td>
+          </tr>
+          <tr>
+            <td>Bonus</td>
+            <td>
+              {Number(One) +
+                Number(Two) +
+                Number(Three) +
+                Number(Four) +
+                Number(Five) +
+                Number(Six) >=
+              63
+                ? "+35"
+                : Number(One) +
+                  Number(Two) +
+                  Number(Three) +
+                  Number(Four) +
+                  Number(Five) +
+                  Number(Six) +
+                  "/63"}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveChoice}>Choice</button>
+            </td>
+            <td>{Choice}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveFourOfAKind}>4 of a Kind</button>
+            </td>
+            <td>{FourOfAKind}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveFullHouse}>Full House</button>
+            </td>
+            <td>{FullHouse}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveSstraight}>S.Straight</button>
+            </td>
+            <td>{Sstraight}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveLstraight}>L.Straight</button>
+            </td>
+            <td>{Lstraight}</td>
+          </tr>
+          <tr>
+            <td>
+              <button onClick={SaveYacht}>Yacht</button>
+            </td>
+            <td>{Yacht}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div className="Total">
         총합 :{" "}
         {Number(One) +
           Number(Two) +
           Number(Three) +
           Number(Four) +
           Number(Five) +
-          Number(Six) +
-          Number(Choice) +
-          Number(FourOfAKind) +
-          Number(FullHouse) +
-          Number(Sstraight) +
-          Number(Lstraight) +
-          Number(Yacht)}
+          Number(Six) >=
+        63
+          ? Number(One) +
+            Number(Two) +
+            Number(Three) +
+            Number(Four) +
+            Number(Five) +
+            Number(Six) +
+            Number(Choice) +
+            Number(FourOfAKind) +
+            Number(FullHouse) +
+            Number(Sstraight) +
+            Number(Lstraight) +
+            Number(Yacht) +
+            35
+          : Number(One) +
+            Number(Two) +
+            Number(Three) +
+            Number(Four) +
+            Number(Five) +
+            Number(Six) +
+            Number(Choice) +
+            Number(FourOfAKind) +
+            Number(FullHouse) +
+            Number(Sstraight) +
+            Number(Lstraight) +
+            Number(Yacht)}
       </div>
-    </>
+      <div>점수표</div>
+      {RecordScore()}
+    </div>
   );
 }
 
