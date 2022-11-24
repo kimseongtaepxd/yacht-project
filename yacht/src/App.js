@@ -33,7 +33,6 @@ function App() {
         let NewDice = diceEyes.map((dice, index) =>
           LockDice[index] ? dice : Math.floor(Math.random() * 6 + 1)
         );
-        console.log(NewDice);
         setDiceEyes(NewDice);
       }
 
@@ -294,7 +293,6 @@ function App() {
     Yacht.toString() !== ""
   ) {
     addTotal();
-    console.log("실행확인");
     var userName = prompt(
       "닉네임을 입력해주세요! 최종 스코어 :" + Total,
       "익명"
@@ -372,37 +370,49 @@ function App() {
         <tbody>
           <tr>
             <td>
-              <button onClick={SaveOne}>Aces</button>
+              <button className="One" onClick={SaveOne}>
+                Aces
+              </button>
             </td>
             <td>{One}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveTwo}>Deuces</button>
+              <button className="Two" onClick={SaveTwo}>
+                Deuces
+              </button>
             </td>
             <td>{Two}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveThree}>Threes</button>
+              <button className="Three" onClick={SaveThree}>
+                Threes
+              </button>
             </td>
             <td>{Three}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveFour}>Fours</button>
+              <button className="Four" onClick={SaveFour}>
+                Fours
+              </button>
             </td>
             <td>{Four}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveFive}>Fives</button>
+              <button className="Five" onClick={SaveFive}>
+                Fives
+              </button>
             </td>
             <td>{Five}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveSix}>Sixes</button>
+              <button className="Six" onClick={SaveSix}>
+                Sixes
+              </button>
             </td>
             <td>{Six}</td>
           </tr>
@@ -428,37 +438,49 @@ function App() {
           </tr>
           <tr>
             <td>
-              <button onClick={SaveChoice}>Choice</button>
+              <button className="Choice" onClick={SaveChoice}>
+                Choice
+              </button>
             </td>
             <td>{Choice}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveFourOfAKind}>4 of a Kind</button>
+              <button className="FourOfAKind" onClick={SaveFourOfAKind}>
+                4 of a Kind
+              </button>
             </td>
             <td>{FourOfAKind}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveFullHouse}>Full House</button>
+              <button className="FullHouse" onClick={SaveFullHouse}>
+                Full House
+              </button>
             </td>
             <td>{FullHouse}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveSstraight}>S.Straight</button>
+              <button className="SStraight" onClick={SaveSstraight}>
+                S.Straight
+              </button>
             </td>
             <td>{Sstraight}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveLstraight}>L.Straight</button>
+              <button className="LStraight" onClick={SaveLstraight}>
+                L.Straight
+              </button>
             </td>
             <td>{Lstraight}</td>
           </tr>
           <tr>
             <td>
-              <button onClick={SaveYacht}>Yacht</button>
+              <button className="Yacht" onClick={SaveYacht}>
+                Yacht
+              </button>
             </td>
             <td>{Yacht}</td>
           </tr>
