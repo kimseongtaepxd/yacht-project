@@ -1,23 +1,31 @@
 import "./App.css";
 import { useState } from "react";
+import Dices from "./components/Dices";
+import Categories from "./components/Categories";
 
 function App() {
-  const [diceEyes, setDiceEyes] = useState([]);
-  const [LockDice, setLockDice] = useState([false, false, false, false, false]);
-  const [leftRoll, setLeftRoll] = useState(3);
-  const [One, setOne] = useState([]);
-  const [Two, setTwo] = useState([]);
-  const [Three, setThree] = useState([]);
-  const [Four, setFour] = useState([]);
-  const [Five, setFive] = useState([]);
-  const [Six, setSix] = useState([]);
-  const [Choice, setChoice] = useState([]);
-  const [FourOfAKind, setFourOfAKind] = useState([]);
-  const [FullHouse, setFullHouse] = useState([]);
-  const [Sstraight, setSstraight] = useState([]);
-  const [Lstraight, setLstraight] = useState([]);
-  const [Yacht, setYacht] = useState([]);
-  const [Total, setTotal] = useState(0);
+  const [diceEyes, setDiceEyes] = useState<number[]>([]);
+  const [LockDice, setLockDice] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [leftRoll, setLeftRoll] = useState<number>(3);
+  const [One, setOne] = useState<number | undefined>();
+  const [Two, setTwo] = useState<number>();
+  const [Three, setThree] = useState<number>();
+  const [Four, setFour] = useState<number>();
+  const [Five, setFive] = useState<number>();
+  const [Six, setSix] = useState<number>();
+  const [Choice, setChoice] = useState<number>();
+  const [FourOfAKind, setFourOfAKind] = useState<number>();
+  const [FullHouse, setFullHouse] = useState<number>();
+  const [Sstraight, setSstraight] = useState<number>();
+  const [Lstraight, setLstraight] = useState<number>();
+  const [Yacht, setYacht] = useState<number>();
+  const [Total, setTotal] = useState<number>(0);
 
   const rolling = () => {
     if (leftRoll > 0) {
@@ -278,6 +286,7 @@ function App() {
       reset();
     }
   };
+
   if (
     One.toString() !== "" &&
     Two.toString() !== "" &&
@@ -341,187 +350,40 @@ function App() {
 
   return (
     <div className="Window">
-      <div className="Dices">
-        {diceEyes.map((dice, index) => (
-          <button
-            key={index + "dice"}
-            onClick={() => {
-              Lock(index);
-            }}
-            className={LockDice[index] ? "Lock" : "Open"}
-          >
-            {dice}
-          </button>
-        ))}
-      </div>
+      <Dices diceEyes={diceEyes} Lock={Lock} LockDice={LockDice} />
 
       <div className="Roll">
         <button onClick={rolling}>주사위 굴리기</button>
         <span>남은 재굴림 : {leftRoll} </span>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Categories</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <button className="One" onClick={SaveOne}>
-                Aces
-              </button>
-            </td>
-            <td>{One}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Two" onClick={SaveTwo}>
-                Deuces
-              </button>
-            </td>
-            <td>{Two}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Three" onClick={SaveThree}>
-                Threes
-              </button>
-            </td>
-            <td>{Three}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Four" onClick={SaveFour}>
-                Fours
-              </button>
-            </td>
-            <td>{Four}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Five" onClick={SaveFive}>
-                Fives
-              </button>
-            </td>
-            <td>{Five}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Six" onClick={SaveSix}>
-                Sixes
-              </button>
-            </td>
-            <td>{Six}</td>
-          </tr>
-          <tr>
-            <td>Bonus</td>
-            <td>
-              {Number(One) +
-                Number(Two) +
-                Number(Three) +
-                Number(Four) +
-                Number(Five) +
-                Number(Six) >=
-              63
-                ? "+35"
-                : Number(One) +
-                  Number(Two) +
-                  Number(Three) +
-                  Number(Four) +
-                  Number(Five) +
-                  Number(Six) +
-                  "/63"}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Choice" onClick={SaveChoice}>
-                Choice
-              </button>
-            </td>
-            <td>{Choice}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="FourOfAKind" onClick={SaveFourOfAKind}>
-                4 of a Kind
-              </button>
-            </td>
-            <td>{FourOfAKind}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="FullHouse" onClick={SaveFullHouse}>
-                Full House
-              </button>
-            </td>
-            <td>{FullHouse}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="SStraight" onClick={SaveSstraight}>
-                S.Straight
-              </button>
-            </td>
-            <td>{Sstraight}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="LStraight" onClick={SaveLstraight}>
-                L.Straight
-              </button>
-            </td>
-            <td>{Lstraight}</td>
-          </tr>
-          <tr>
-            <td>
-              <button className="Yacht" onClick={SaveYacht}>
-                Yacht
-              </button>
-            </td>
-            <td>{Yacht}</td>
-          </tr>
-        </tbody>
-      </table>
+      <Categories
+        One={One}
+        Two={Two}
+        Three={Three}
+        Four={Four}
+        Five={Five}
+        Six={Six}
+        SaveOne={SaveOne}
+        SaveTwo={SaveTwo}
+        SaveThree={SaveThree}
+        SaveFour={SaveFour}
+        SaveFive={SaveFive}
+        SaveSix={SaveSix}
+        Choice={Choice}
+        FourOfAKind={FourOfAKind}
+        FullHouse={FullHouse}
+        Sstraight={Sstraight}
+        Lstraight={Lstraight}
+        Yacht={Yacht}
+        SaveChoice={SaveChoice}
+        SaveFourOfAKind={SaveFourOfAKind}
+        SaveFullHouse={SaveFullHouse}
+        SaveSstraight={SaveSstraight}
+        SaveLstraight={SaveLstraight}
+        SaveYacht={SaveYacht}
+      />
 
-      <div className="Total">
-        총합 :{" "}
-        {Number(One) +
-          Number(Two) +
-          Number(Three) +
-          Number(Four) +
-          Number(Five) +
-          Number(Six) >=
-        63
-          ? Number(One) +
-            Number(Two) +
-            Number(Three) +
-            Number(Four) +
-            Number(Five) +
-            Number(Six) +
-            Number(Choice) +
-            Number(FourOfAKind) +
-            Number(FullHouse) +
-            Number(Sstraight) +
-            Number(Lstraight) +
-            Number(Yacht) +
-            35
-          : Number(One) +
-            Number(Two) +
-            Number(Three) +
-            Number(Four) +
-            Number(Five) +
-            Number(Six) +
-            Number(Choice) +
-            Number(FourOfAKind) +
-            Number(FullHouse) +
-            Number(Sstraight) +
-            Number(Lstraight) +
-            Number(Yacht)}
-      </div>
       <div>점수표</div>
       {RecordScore()}
     </div>
