@@ -1,7 +1,13 @@
 import React from "react";
 import Dice from "./Dice";
 
-const Dices = (props) => {
+interface T {
+  diceEyes: number[];
+  Lock: Function;
+  LockDice: boolean[];
+}
+
+const Dices = (props: T) => {
   return (
     <>
       <div className="Dices">

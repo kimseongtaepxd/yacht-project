@@ -2,7 +2,22 @@ import React from "react";
 import CateTD from "./CateTD";
 import Bonus from "./Bonus";
 
-const CateTop = (props) => {
+interface T {
+  One: string;
+  Two: string;
+  Three: string;
+  Four: string;
+  Five: string;
+  Six: string;
+  SaveOne: React.MouseEventHandler<HTMLButtonElement>;
+  SaveTwo: React.MouseEventHandler<HTMLButtonElement>;
+  SaveThree: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFour: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFive: React.MouseEventHandler<HTMLButtonElement>;
+  SaveSix: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const CateTop = (props: T) => {
   const Cate = [
     {
       id: "Aces",

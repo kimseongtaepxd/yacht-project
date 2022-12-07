@@ -1,6 +1,12 @@
 import React from "react";
 
-const Dices = (props) => {
+interface T {
+  dice: number;
+  index: number;
+  Lock: Function;
+  LockDice: boolean[];
+}
+const Dices = (props: T) => {
   return (
     <button
       onClick={() => {

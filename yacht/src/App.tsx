@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import Dices from "./components/Dices";
 import Categories from "./components/Categories";
 
@@ -13,18 +13,18 @@ function App() {
     false,
   ]);
   const [leftRoll, setLeftRoll] = useState<number>(3);
-  const [One, setOne] = useState<number | undefined>();
-  const [Two, setTwo] = useState<number>();
-  const [Three, setThree] = useState<number>();
-  const [Four, setFour] = useState<number>();
-  const [Five, setFive] = useState<number>();
-  const [Six, setSix] = useState<number>();
-  const [Choice, setChoice] = useState<number>();
-  const [FourOfAKind, setFourOfAKind] = useState<number>();
-  const [FullHouse, setFullHouse] = useState<number>();
-  const [Sstraight, setSstraight] = useState<number>();
-  const [Lstraight, setLstraight] = useState<number>();
-  const [Yacht, setYacht] = useState<number>();
+  const [One, setOne] = useState<string>("");
+  const [Two, setTwo] = useState<string>("");
+  const [Three, setThree] = useState<string>("");
+  const [Four, setFour] = useState<string>("");
+  const [Five, setFive] = useState<string>("");
+  const [Six, setSix] = useState<string>("");
+  const [Choice, setChoice] = useState<string>("");
+  const [FourOfAKind, setFourOfAKind] = useState<string>("");
+  const [FullHouse, setFullHouse] = useState<string>("");
+  const [Sstraight, setSstraight] = useState<string>("");
+  const [Lstraight, setLstraight] = useState<string>("");
+  const [Yacht, setYacht] = useState<string>("");
   const [Total, setTotal] = useState<number>(0);
 
   const rolling = () => {
@@ -48,61 +48,31 @@ function App() {
     }
   };
 
-  const Lock = (index) => {
+  const Lock = (index: number) => {
     setLockDice(LockDice.map((lock, i) => (index === i ? !lock : lock)));
   };
 
-  const reset = () => {
-    addTotal();
+  const reset = (number: number) => {
+    setTotal(Total + number);
     setLeftRoll(3);
     setDiceEyes([]);
     setLockDice([false, false, false, false, false]);
   };
 
-  const addTotal = () => {
-    let NewScore =
-      Number(One) +
-      Number(Two) +
-      Number(Three) +
-      Number(Four) +
-      Number(Five) +
-      Number(Six) +
-      Number(Choice) +
-      Number(FourOfAKind) +
-      Number(FullHouse) +
-      Number(Sstraight) +
-      Number(Lstraight) +
-      Number(Yacht);
-
-    if (
-      Number(One) +
-        Number(Two) +
-        Number(Three) +
-        Number(Four) +
-        Number(Five) +
-        Number(Six) >=
-      63
-    ) {
-      NewScore += 35;
-    }
-
-    setTotal(NewScore);
-  };
-
   const SaveOne = () => {
     if (One.toString() === "" && diceEyes.toString() !== "") {
       let one = diceEyes.filter((e) => e === 1);
-
       if (one.toString() !== "") {
         let oneTotal = one.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setOne(oneTotal);
-      } else {
-        setOne(0);
-      }
 
-      reset();
+        setOne(oneTotal.toString());
+        reset(oneTotal);
+      } else {
+        setOne("0");
+        reset(0);
+      }
     }
   };
 
@@ -113,11 +83,12 @@ function App() {
         let twoTotal = two.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setTwo(twoTotal);
+        setTwo(twoTotal.toString());
+        reset(twoTotal);
       } else {
-        setTwo(0);
+        setTwo("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -128,11 +99,12 @@ function App() {
         let threeTotal = three.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setThree(threeTotal);
+        setThree(threeTotal.toString());
+        reset(threeTotal);
       } else {
-        setThree(0);
+        setThree("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -143,11 +115,12 @@ function App() {
         let fourTotal = four.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setFour(fourTotal);
+        setFour(fourTotal.toString());
+        reset(fourTotal);
       } else {
-        setFour(0);
+        setFour("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -158,11 +131,12 @@ function App() {
         let fiveTotal = five.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setFive(fiveTotal);
+        setFive(fiveTotal.toString());
+        reset(fiveTotal);
       } else {
-        setFive(0);
+        setFive("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -173,11 +147,12 @@ function App() {
         let sixTotal = six.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setSix(sixTotal);
+        setSix(sixTotal.toString());
+        reset(sixTotal);
       } else {
-        setSix(0);
+        setSix("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -186,71 +161,80 @@ function App() {
       let ChoiceTotal = diceEyes.reduce((prev, cur) => {
         return (prev += cur);
       });
-      setChoice(ChoiceTotal);
-      reset();
+      setChoice(ChoiceTotal.toString());
+      reset(ChoiceTotal);
     }
   };
 
   const SaveFourOfAKind = () => {
     if (FourOfAKind.toString() === "" && diceEyes.toString() !== "") {
-      const result = diceEyes.reduce((accu, curr) => {
-        accu[curr] = (accu[curr] || 0) + 1;
-        return accu;
-      }, []);
+      const result: number[] = diceEyes.reduce(
+        (accu: number[], curr: number): number[] => {
+          accu[curr] = (accu[curr] || 0) + 1;
+          return accu;
+        },
+        []
+      );
 
-      let SameNumber = result.filter((e) => (e === 4) | (e === 5));
+      let SameNumber = result.filter((e) => e === 4 || e === 5);
       if (SameNumber.length > 0) {
         let FourOfAKindTotal = diceEyes.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setFourOfAKind(FourOfAKindTotal);
+        setFourOfAKind(FourOfAKindTotal.toString());
+        reset(FourOfAKindTotal);
       } else {
-        setFourOfAKind(0);
+        setFourOfAKind("0");
+        reset(0);
       }
-      reset();
     }
   };
 
   const SaveFullHouse = () => {
     if (FullHouse.toString() === "" && diceEyes.toString() !== "") {
-      const result = diceEyes.reduce((accu, curr) => {
-        accu[curr] = (accu[curr] || 0) + 1;
-        return accu;
-      }, []);
+      const result: number[] = diceEyes.reduce(
+        (accu: number[], curr: number): number[] => {
+          accu[curr] = (accu[curr] || 0) + 1;
+          return accu;
+        },
+        []
+      );
 
-      let SameNumber = result.filter((e) => e !== "").sort();
+      let SameNumber = result.filter((e) => e != null).sort();
 
       if (SameNumber.toString() === [2, 3].toString()) {
         let FullHouseTotal = diceEyes.reduce((prev, cur) => {
           return (prev += cur);
         });
-        setFullHouse(FullHouseTotal);
+        setFullHouse(FullHouseTotal.toString());
+        reset(FullHouseTotal);
       } else {
-        setFullHouse(0);
+        setFullHouse("0");
+        reset(0);
       }
-      reset();
     }
   };
 
   const SaveSstraight = () => {
     if (Sstraight.toString() === "" && diceEyes.toString() !== "") {
-      let Straight = diceEyes.sort();
-      Straight = new Set(Straight);
-      Straight = [...Straight];
+      let Straight: number[] = diceEyes.sort();
+      let StraightNoSame = new Set(Straight);
+      let StraightArr = Array.from(StraightNoSame);
 
       if (
-        (Straight.toString() === [1, 2, 3, 4].toString()) |
-        (Straight.toString() === [2, 3, 4, 5].toString()) |
-        (Straight.toString() === [3, 4, 5, 6].toString()) |
-        (Straight.toString() === [1, 2, 3, 4, 5].toString()) |
-        (Straight.toString() === [1, 2, 3, 4, 6].toString()) |
-        (Straight.toString() === [2, 3, 4, 5, 6].toString())
+        StraightArr.toString() === [1, 2, 3, 4].toString() ||
+        StraightArr.toString() === [2, 3, 4, 5].toString() ||
+        StraightArr.toString() === [3, 4, 5, 6].toString() ||
+        StraightArr.toString() === [1, 2, 3, 4, 5].toString() ||
+        StraightArr.toString() === [1, 2, 3, 4, 6].toString() ||
+        StraightArr.toString() === [2, 3, 4, 5, 6].toString()
       ) {
-        setSstraight(15);
+        setSstraight("15");
+        reset(15);
       } else {
-        setSstraight(0);
+        setSstraight("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -258,32 +242,37 @@ function App() {
     if (Lstraight.toString() === "" && diceEyes.toString() !== "") {
       let sortArry = diceEyes.sort();
       if (
-        (sortArry.toString() === [1, 2, 3, 4, 5].toString()) |
-        (sortArry.toString() === [2, 3, 4, 5, 6].toString())
+        sortArry.toString() === [1, 2, 3, 4, 5].toString() ||
+        sortArry.toString() === [2, 3, 4, 5, 6].toString()
       ) {
-        setLstraight(30);
+        setLstraight("30");
+        reset(30);
       } else {
-        setLstraight(0);
+        setLstraight("0");
+        reset(0);
       }
-      reset();
     }
   };
 
   const SaveYacht = () => {
     if (Yacht.toString() === "" && diceEyes.toString() !== "") {
-      const result = diceEyes.reduce((accu, curr) => {
-        accu[curr] = (accu[curr] || 0) + 1;
-        return accu;
-      }, []);
+      const result: number[] = diceEyes.reduce(
+        (accu: number[], curr: number): number[] => {
+          accu[curr] = (accu[curr] || 0) + 1;
+          return accu;
+        },
+        []
+      );
 
       let SameNumber = result.filter((e) => e === 5);
 
       if (SameNumber.length > 0) {
-        setYacht(50);
+        setYacht("50");
+        reset(50);
       } else {
-        setYacht(0);
+        setYacht("0");
+        reset(0);
       }
-      reset();
     }
   };
 
@@ -301,51 +290,67 @@ function App() {
     Lstraight.toString() !== "" &&
     Yacht.toString() !== ""
   ) {
-    addTotal();
-    var userName = prompt(
+    let userName = prompt(
       "닉네임을 입력해주세요! 최종 스코어 :" + Total,
       "익명"
     );
 
-    localStorage.setItem(userName, Total);
+    if (userName === null) {
+      userName = "익명";
+    }
+
+    localStorage.setItem(userName, Total.toString());
     //Id의 숫자가 1늘어남
 
-    setOne([]);
-    setTwo([]);
-    setThree([]);
-    setFour([]);
-    setFive([]);
-    setSix([]);
-    setChoice([]);
-    setFourOfAKind([]);
-    setFullHouse([]);
-    setSstraight([]);
-    setLstraight([]);
-    setYacht([]);
-    reset();
+    setOne("");
+    setTwo("");
+    setThree("");
+    setFour("");
+    setFive("");
+    setSix("");
+    setChoice("");
+    setFourOfAKind("");
+    setFullHouse("");
+    setSstraight("");
+    setLstraight("");
+    setYacht("");
+    setTotal(0);
+    setLeftRoll(3);
+    setDiceEyes([]);
+    setLockDice([false, false, false, false, false]);
+  }
+
+  interface T {
+    NickName: string | null;
+    Score: String | null;
   }
 
   const RecordScore = () => {
-    let arr = [];
+    let arr: T[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       let key = localStorage.key(i);
-      let EndScore = localStorage.getItem(key);
-      const Item = {
-        NickName: key,
-        Score: EndScore,
-      };
-      arr.push(Item);
+
+      if (key != null) {
+        let EndScore = localStorage.getItem(key);
+        const Item: T = {
+          NickName: key,
+          Score: EndScore,
+        };
+        arr.push(Item);
+      } else {
+        break;
+      }
     }
-    arr.sort(function (a, b) {
+    arr.sort(function(a: any, b: any) {
       // 오름차순
       return a - b;
     });
-    arr = arr.map((arr, index) => (
-      <div key={arr.NickName} id={index}>
+    const arrDom = arr.map((arr, index: number) => (
+      <div key={arr.NickName} id={index.toString()}>
         {arr.NickName} : {arr.Score}
       </div>
     ));
-    return arr;
+    return arrDom;
   };
 
   return (

@@ -2,7 +2,34 @@ import React from "react";
 import CateTop from "./CateTop";
 import CateBottom from "./CateBottom";
 
-const Categories = (props) => {
+interface T {
+  One: string;
+  Two: string;
+  Three: string;
+  Four: string;
+  Five: string;
+  Six: string;
+  SaveOne: React.MouseEventHandler<HTMLButtonElement>;
+  SaveTwo: React.MouseEventHandler<HTMLButtonElement>;
+  SaveThree: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFour: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFive: React.MouseEventHandler<HTMLButtonElement>;
+  SaveSix: React.MouseEventHandler<HTMLButtonElement>;
+  Choice: string;
+  FourOfAKind: string;
+  FullHouse: string;
+  Sstraight: string;
+  Lstraight: string;
+  Yacht: string;
+  SaveChoice: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFourOfAKind: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFullHouse: React.MouseEventHandler<HTMLButtonElement>;
+  SaveSstraight: React.MouseEventHandler<HTMLButtonElement>;
+  SaveLstraight: React.MouseEventHandler<HTMLButtonElement>;
+  SaveYacht: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const Categories = (props: T) => {
   return (
     <>
       <table>

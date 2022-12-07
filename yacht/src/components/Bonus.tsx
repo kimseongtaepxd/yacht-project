@@ -1,6 +1,15 @@
 import React from "react";
 
-const Bonus = (props) => {
+interface T {
+  One: String;
+  Two: String;
+  Three: String;
+  Four: String;
+  Five: String;
+  Six: String;
+}
+
+const Bonus = (props: T) => {
   return (
     <>
       <tr>

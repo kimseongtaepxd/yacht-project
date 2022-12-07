@@ -1,6 +1,21 @@
 import CateTD from "./CateTD";
+import React from "react";
 
-const CateBottom = (props) => {
+interface T {
+  Choice: string;
+  FourOfAKind: string;
+  FullHouse: string;
+  Sstraight: string;
+  Lstraight: string;
+  Yacht: string;
+  SaveChoice: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFourOfAKind: React.MouseEventHandler<HTMLButtonElement>;
+  SaveFullHouse: React.MouseEventHandler<HTMLButtonElement>;
+  SaveSstraight: React.MouseEventHandler<HTMLButtonElement>;
+  SaveLstraight: React.MouseEventHandler<HTMLButtonElement>;
+  SaveYacht: React.MouseEventHandler<HTMLButtonElement>;
+}
+const CateBottom = (props: T) => {
   const Cate = [
     {
       id: "4 of a Kind",
@@ -40,6 +55,7 @@ const CateBottom = (props) => {
         <CateTD
           key={cate.id}
           Name={cate.id}
+          Class={cate.Class}
           Number={cate.Number}
           Function={cate.Function}
         />
